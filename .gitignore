@@ -1,0 +1,9 @@
+*.rsa
+*.pub
+dist
+packages
+.task
+temp
+work
+!.env.example
+secrets

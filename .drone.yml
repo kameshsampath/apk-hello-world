@@ -1,0 +1,40 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: package
+    image: docker.io/kameshsampath/melange-drone-plugin:latest
+    pull: if-not-exists
+    privileged: true
+    settings:
+      archs:
+        - arm64
+        - amd64
+      config_file: melange.yaml
+
+  - name: publish
+    image: docker.io/kameshsampath/apko-drone-plugin:latest
+    pull: if-not-exists
+    settings:
+      archs:
+        - arm64
+        - amd64
+      config_file: image.yaml
+      image_repo: quay.io/kameshsampath/apk-hello-world:0.0.1
+      publish: true
+      image_registry_username:
+        from_secret: image_registry_username
+      image_registry_password:
+        from_secret: image_registry_password
+---
+kind: pipeline
+type: docker
+name: keys
+
+steps:
+  - name: generate keys
+    image: cgr.dev/chainguard/melange
+    commands:
+      - melange keygen
