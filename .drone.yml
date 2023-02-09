@@ -13,16 +13,17 @@ steps:
         - arm64
         - amd64
       config_file: melange.yaml
+      env_file: build.env
 
   - name: publish
-    image: docker.io/kameshsampath/apko-drone-plugin:latest
+    image: docker.io/kameshsampath/apko-drone-plugin
     pull: if-not-exists
     settings:
       archs:
         - arm64
         - amd64
       config_file: image.yaml
-      image_repo: quay.io/kameshsampath/apk-hello-world:0.0.1
+      image_repo: quay.io/kameshsampath/apk-hello-world
       publish: true
       image_registry_username:
         from_secret: image_registry_username
@@ -38,3 +39,19 @@ steps:
     image: cgr.dev/chainguard/melange
     commands:
       - melange keygen
+---
+kind: pipeline
+type: docker
+name: build
+
+steps:
+  - name: publish
+    image: docker.io/kameshsampath/apko-drone-plugin
+    pull: if-not-exists
+    settings:
+      archs:
+        - arm64
+        - amd64
+      config_file: image.yaml
+      image_repo: quay.io/kameshsampath/apk-hello-world
+      publish: false
