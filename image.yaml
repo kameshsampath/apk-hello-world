@@ -26,7 +26,7 @@ contents:
     - https://dl-cdn.alpinelinux.org/alpine/edge/main
   packages:
     - "hello-world@local"
-    # x86_64 image requires this...
+    # x86_64 image requires this...??
     - musl
 
 work-dir: /workspace
